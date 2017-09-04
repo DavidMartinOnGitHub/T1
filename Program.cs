@@ -35,14 +35,14 @@ namespace Direct
             Console.WriteLine("<<NEW");
 
       #if LINUXBUILD
-            Console.WriteLine(">>SetVIDPID"");      
+            Console.WriteLine(">>SetVIDPID");      
             ftStatus = ftdi.SetVIDPID(0x0403, 0x7cb0);
             if (ftStatus != FTDI.FT_STATUS.FT_OK)
             {
                 string msg = string.Format("SetVIDPID failed with '{0}'.", ftStatus.ToString());
                 throw new Exception(msg);
             }
-            Console.WriteLine("<<SetVIDPID"");      
+            Console.WriteLine("<<SetVIDPID");      
 #endif
 
             Console.WriteLine(">>OpenBySerialNumber");

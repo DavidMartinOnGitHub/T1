@@ -27,12 +27,25 @@ namespace Direct
             string serialNumber = "N1-00152";
 
             Console.WriteLine("Serial Number = {0}", serialNumber);
+            
+            FTDI.FT_STATUS ftStatus = FTDI.FT_STATUS.FT_OK;
 
+            
             FTD2XX_NET.FTDI ftdi = new FTD2XX_NET.FTDI();
+
+            
+#if LINUXBUILD
+            ftStatus = ftdi.SetVIDPID(0x0403, 0x7cb0);
+            if (ftStatus != FTDI.FT_STATUS.FT_OK)
+            {
+                string msg = string.Format("SetVIDPID failed with '{0}'.", ftStatus.ToString());
+                throw new Exception(msg);
+            }
+#endif
 
             Console.WriteLine(">>OpenBySerialNumber");
 
-            FTDI.FT_STATUS ftStatus = ftdi.OpenBySerialNumber(serialNumber);
+            ftStatus = ftdi.OpenBySerialNumber(serialNumber);
             if (ftStatus != FTDI.FT_STATUS.FT_OK)
             {
                 string msg = string.Format("OpenBySerialNumber failed with '{0}' on Serial Number '{1}'", ftStatus.ToString(), serialNumber);

@@ -87,6 +87,9 @@ namespace FTD2XX_NET
 				pFT_Rescan = GetProcAddress(hFTD2XXDLL, "FT_Rescan");
 				pFT_Reload = GetProcAddress(hFTD2XXDLL, "FT_Reload");
 				pFT_Purge = GetProcAddress(hFTD2XXDLL, "FT_Purge");
+        //+++IntPtr pFT_SetVIDPID = IntPtr.Zero;
+        pFT_SetVIDPID = GetProcAddress(hFTD2XXDLL, "FT_SetVIDPID");
+
 				pFT_SetTimeouts = GetProcAddress(hFTD2XXDLL, "FT_SetTimeouts");
 				pFT_SetBreakOn = GetProcAddress(hFTD2XXDLL, "FT_SetBreakOn");
 				pFT_SetBreakOff = GetProcAddress(hFTD2XXDLL, "FT_SetBreakOff");
@@ -200,6 +203,13 @@ namespace FTD2XX_NET
 		private delegate FT_STATUS tFT_Reload(UInt16 wVID, UInt16 wPID);
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate FT_STATUS tFT_Purge(IntPtr ftHandle, UInt32 dwMask);
+
+    //+++
+		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+		private delegate FT_STATUS tFT_SetVIDPID(UInt32 vid, UInt32 pid);
+    //+++
+
+
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		private delegate FT_STATUS tFT_SetTimeouts(IntPtr ftHandle, UInt32 dwReadTimeout, UInt32 dwWriteTimeout);
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -1972,6 +1982,7 @@ namespace FTD2XX_NET
 		IntPtr pFT_Rescan = IntPtr.Zero;
 		IntPtr pFT_Reload = IntPtr.Zero;
 		IntPtr pFT_Purge = IntPtr.Zero;
+    IntPtr pFT_SetVIDPID = IntPtr.Zero; //+++
 		IntPtr pFT_SetTimeouts = IntPtr.Zero;
 		IntPtr pFT_SetBreakOn = IntPtr.Zero;
 		IntPtr pFT_SetBreakOff = IntPtr.Zero;
@@ -5745,6 +5756,31 @@ namespace FTD2XX_NET
 			}
 			return ftStatus;
 		}
+
+        public FT_STATUS SetVIDPID(UInt32 vid, UInt32 pid)
+        {
+            FT_STATUS ftStatus = FT_STATUS.FT_OTHER_ERROR;
+
+            // If the DLL hasn't been loaded, just return here
+            if (hFTD2XXDLL == IntPtr.Zero)
+                return ftStatus;
+
+            // Check for our required function pointers being set up
+            if (pFT_SetVIDPID != IntPtr.Zero)
+            {
+                tFT_SetVIDPID FT_SetVIDPID = (tFT_SetVIDPID)Marshal.GetDelegateForFunctionPointer(pFT_SetVIDPID, typeof(tFT_SetVIDPID));
+                ftStatus = FT_SetVIDPID(vid, pid);
+            }
+            else
+            {
+                if (pFT_SetVIDPID == IntPtr.Zero)
+                {
+                    ReportError("Failed to load function FT_SetVIDPID.");
+                }
+            }
+            return ftStatus;
+
+        }
 
 		//**************************************************************************
 		// SetTimeouts

@@ -49,6 +49,7 @@ namespace Direct
             Console.WriteLine(">>Initialize");
 #if LINUXBUILD
             FT_STATUS ftstatus = FT_SetVIDPID(0x0403, 0x7cb0);
+			Console.WriteLine("FT_STATUS = {0}", ftstatus.ToString());
 #endif
             Console.WriteLine("<<Initialize");
         }

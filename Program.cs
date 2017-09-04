@@ -8,39 +8,41 @@ using FTD2XX_NET;
 
 namespace Direct
 {
-    class Program
+  class Program
+  {
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            RequestMicroNIRFirmware();
+      RequestMicroNIRFirmware();
 
-            Console.WriteLine("DONE");
+      Console.WriteLine("DONE");
 
-            // Console.WriteLine("Press any key to continue...");
-            // Console.ReadKey();
-        }
+      // Console.WriteLine("Press any key to continue...");
+      // Console.ReadKey();
+    }
 
-        //---------------------------
+    //---------------------------
 
         private static bool RequestMicroNIRFirmware()
-        {
-            string serialNumber = "N1-00152";
+    {
+      string serialNumber = "N1-00152";
 
-            Console.WriteLine("Serial Number = {0}", serialNumber);
-            
-            FTDI.FT_STATUS ftStatus = FTDI.FT_STATUS.FT_OK;
+      Console.WriteLine("Serial Number = {0}", serialNumber);
 
-            
+      FTDI.FT_STATUS ftStatus = FTDI.FT_STATUS.FT_OK;
+
+            Console.WriteLine(">>NEW");
             FTD2XX_NET.FTDI ftdi = new FTD2XX_NET.FTDI();
+            Console.WriteLine("<<NEW");
 
-            
-#if LINUXBUILD
+      #if LINUXBUILD
+            Console.WriteLine(">>SetVIDPID"");      
             ftStatus = ftdi.SetVIDPID(0x0403, 0x7cb0);
             if (ftStatus != FTDI.FT_STATUS.FT_OK)
             {
                 string msg = string.Format("SetVIDPID failed with '{0}'.", ftStatus.ToString());
                 throw new Exception(msg);
             }
+            Console.WriteLine("<<SetVIDPID"");      
 #endif
 
             Console.WriteLine(">>OpenBySerialNumber");

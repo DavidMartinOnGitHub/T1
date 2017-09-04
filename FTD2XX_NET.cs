@@ -33,11 +33,13 @@ namespace FTD2XX_NET
   /// </summary>
     public class FTDI
   {
-#if MONOBUILD
-    private const string dllname = "libftd2xx.so";
-#else
-    private const string dllname = "FTD2XX.DLL";
-#endif      
+// // #if MONOBUILD
+    // // private const string dllname = "libftd2xx.so";
+// // #else
+    // // private const string dllname = "ftd2xx.dll";
+// // #endif      
+    private const string dllname = "ftd2xx.dll";
+
 
 		#region CONSTRUCTOR_DESTRUCTOR
 		// constructor

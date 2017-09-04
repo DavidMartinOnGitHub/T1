@@ -28,6 +28,7 @@ namespace Direct
     private static void Test()
     {
         Ftdi ftdi = new Ftdi();
+        ftdi.Initialize();
         ftdi.ListDevices();
     }
 
